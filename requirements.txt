@@ -1,0 +1,3 @@
+bs4
+requests==2.0.1
+selenium==3.9
