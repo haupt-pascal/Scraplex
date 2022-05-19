@@ -1,10 +1,14 @@
 # import
+import codecs
+import json
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import time
 
 class WebDriver:
-    location_data = {}
+    location_data = {
+
+    }
 
     def __init__(self):
         self.PATH = "chromedriver.exe"
@@ -22,18 +26,22 @@ class WebDriver:
         self.location_data["data2"] = "NA"
         self.location_data["data3"] = "NA"
         self.location_data["data4"] = "NA"
+        self.location_data["data5"] = "NA"
+        self.location_data["data6"] = "NA"
         self.location_data["url"] = url
 
     def company_scrape(self):
         time.sleep(15)
         try:
             name = self.driver.find_elements_by_tag_name("h1")[0]
-            location = self.driver.find_elements_by_class_name('Io6YTe')[0]
-            avg_rating = self.driver.find_element_by_class_name('F7nice')
-            data1 = self.driver.find_elements_by_class_name('Io6YTe')[1]
-            data2 = self.driver.find_elements_by_class_name('Io6YTe')[2]
-            data3 = self.driver.find_elements_by_class_name('Io6YTe')[3]
-            data4 = self.driver.find_elements_by_class_name('Io6YTe')[4]
+            location = self.driver.find_elements_by_class_name("Io6YTe")[0]
+            avg_rating = self.driver.find_element_by_class_name("F7nice")
+            data1 = self.driver.find_elements_by_class_name("Io6YTe")[1]
+            data2 = self.driver.find_elements_by_class_name("Io6YTe")[2]
+            data3 = self.driver.find_elements_by_class_name("Io6YTe")[3]
+            data4 = self.driver.find_elements_by_class_name("Io6YTe")[4]
+            data5 = self.driver.find_elements_by_class_name("Io6YTe")[5]
+            data6 = self.driver.find_elements_by_class_name("Io6YTe")[6]
         except Exception as e:
             print(e)
             pass
@@ -46,6 +54,8 @@ class WebDriver:
             self.location_data["data2"] = data2.text
             self.location_data["data3"] = data3.text
             self.location_data["data4"] = data4.text
+            self.location_data["data5"] = data5.text
+            self.location_data["data6"] = data6.text
             self.location_data["url"] = url
             self.build_json()
         except Exception as f:
@@ -55,10 +65,12 @@ class WebDriver:
 
     def build_json(self):
         try:
-            print(self.location_data, file=open('export.json', 'a', encoding="utf-8"))
+            with codecs.open('export.json', 'w', encoding='utf-8') as f:
+                json.dump(self.location_data, f, ensure_ascii=False, sort_keys=False, indent=4)
         except Exception as e:
             print(e)
-            print(self.location_data, file=open('export.json', 'a'))
+            with codecs.open('export.json', 'w', encoding='utf-8') as f:
+                json.dump(self.location_data, f, ensure_ascii=False, sort_keys=False, indent=4)
 
     def scrape(self, url):
         try:
