@@ -1,14 +1,13 @@
 # import
 import codecs
 import json
+import os
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import time
 
 class WebDriver:
-    location_data = {
-
-    }
+    location_data = {}
 
     def __init__(self):
         self.PATH = "chromedriver.exe"
@@ -28,6 +27,8 @@ class WebDriver:
         self.location_data["data4"] = "NA"
         self.location_data["data5"] = "NA"
         self.location_data["data6"] = "NA"
+        self.location_data["data7"] = "NA"
+        self.location_data["data8"] = "NA"
         self.location_data["url"] = url
 
     def company_scrape(self):
@@ -42,8 +43,9 @@ class WebDriver:
             data4 = self.driver.find_elements_by_class_name("Io6YTe")[4]
             data5 = self.driver.find_elements_by_class_name("Io6YTe")[5]
             data6 = self.driver.find_elements_by_class_name("Io6YTe")[6]
+            data7 = self.driver.find_elements_by_class_name("Io6YTe")[7]
+            data8 = self.driver.find_elements_by_class_name("Io6YTe")[8]
         except Exception as e:
-            print(e)
             pass
 
         try:
@@ -56,20 +58,21 @@ class WebDriver:
             self.location_data["data4"] = data4.text
             self.location_data["data5"] = data5.text
             self.location_data["data6"] = data6.text
+            self.location_data["data7"] = data7.text
+            self.location_data["data8"] = data8.text
             self.location_data["url"] = url
             self.build_json()
         except Exception as f:
-            print(f)
             self.build_json()
             pass
 
     def build_json(self):
         try:
-            with codecs.open('export.json', 'w', encoding='utf-8') as f:
+            with codecs.open('export.json', 'a', encoding='utf-8') as f:
                 json.dump(self.location_data, f, ensure_ascii=False, sort_keys=False, indent=4)
+
         except Exception as e:
-            print(e)
-            with codecs.open('export.json', 'w', encoding='utf-8') as f:
+            with codecs.open('export.json', 'a', encoding='utf-8') as f:
                 json.dump(self.location_data, f, ensure_ascii=False, sort_keys=False, indent=4)
 
     def scrape(self, url):
@@ -90,3 +93,5 @@ for line in lines:
     url = line
     x = WebDriver()
     print(x.scrape(url))
+file.close()
+os.system('python json_encode.py')
