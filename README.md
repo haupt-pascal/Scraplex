@@ -2,14 +2,14 @@
 
 Scraplex is a Python software for scraping company's from google maps. 
 
-## Installation
+## Chromedriver-Installation
 
 You need to download the chromedriver first [here](https://chromedriver.chromium.org/downloads) and add it into C:\chromedriver\
 
 As next, you need to add the path (C:\chromedriver\) into your PATH and restart the computer. 
 
 
-## Chromedriver-Installation
+## Package-Installation
 
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install the required libs.
 
