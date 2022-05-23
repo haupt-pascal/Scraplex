@@ -5,21 +5,15 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.options import Options
 import time
 
 class WebDriver:
     location_data = {}
 
     def __init__(self):
-        #self.PATH = "chromedriver.exe"
-        #self.options = Options()
-        # self.options.binary_location = "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe"
-        #self.options.add_argument("--headless")
-        #self.options.add_argument("--enable-javascript")
-        #self.driver = webdriver.Chrome(self.PATH, options=self.options)
-        #self.driver.maximize_window()
-        #self.options.add_argument("--start-maximized");
         self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+        self.driver.minimize_window()
 
 
         self.location_data["rating"] = "NA"
