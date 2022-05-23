@@ -2,20 +2,25 @@
 import os
 from bs4 import BeautifulSoup
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 import time
 
 class WebDriver:
     location_data = {}
 
     def __init__(self):
-        self.PATH = "chromedriver.exe"
-        self.options = Options()
+        #self.PATH = "chromedriver.exe"
+        #self.options = Options()
         # self.options.binary_location = "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe"
-        self.options.add_argument("--headless")
-        self.options.add_argument("--enable-javascript")
-        self.driver = webdriver.Chrome(self.PATH, options=self.options)
+        #self.options.add_argument("--headless")
+        #self.options.add_argument("--enable-javascript")
+        #self.driver = webdriver.Chrome(self.PATH, options=self.options)
         #self.driver.maximize_window()
+        #self.options.add_argument("--start-maximized");
+        self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+
 
         self.location_data["rating"] = "NA"
         self.location_data["reviews_count"] = "NA"
@@ -33,17 +38,21 @@ class WebDriver:
         print('task is loading, sleeping for 3 seconds now')
         time.sleep(3)
 
-        element = self.driver.find_element_by_xpath('//*[@id="pane"]/div/div[1]/div/div/div[2]/div[1]')
+        element = self.driver.find_element(by=By.XPATH, value='/html/body/div[3]/div[9]/div[9]/div/div/div[1]/div[2]/div/div[1]/div/div/div[2]/div[1]')
+        self.driver.execute_script('arguments[0].scrollTop = arguments[0].scrollHeight', element)
+        time.sleep(1)
+        self.driver.execute_script('arguments[0].scrollTop = arguments[0].scrollHeight', element)
+        time.sleep(1)
+        self.driver.execute_script('arguments[0].scrollTop = arguments[0].scrollHeight', element)
+        time.sleep(1)
+        self.driver.execute_script('arguments[0].scrollTop = arguments[0].scrollHeight', element)
+        time.sleep(1)
         self.driver.execute_script('arguments[0].scrollTop = arguments[0].scrollHeight', element)
         print(' ')
-        print('scrolling down')
-        time.sleep(1)
-        self.driver.execute_script('arguments[0].scrollTop = arguments[0].scrollHeight', element)
-        time.sleep(1)
-        self.driver.execute_script('arguments[0].scrollTop = arguments[0].scrollHeight', element)
+        print('scrolling finished')
 
     def open_next_page(self):
-        button = self.driver.find_element_by_xpath('//*[@id="ppdPk-Ej1Yeb-LgbsSe-tJiF1e"]')
+        button = self.driver.find_element(by=By.XPATH, value='/html/body/div[3]/div[9]/div[9]/div/div/div[1]/div[2]/div/div[1]/div/div/div[2]/div[2]/div/div[1]/div/button[2]')
         button.click()
 
     def link_scrape(self):
@@ -95,9 +104,10 @@ class WebDriver:
                     count += 1
                     print("page " + str(count) + " is now finished...")
 
-            except Exception:
+            except Exception as e:
                 self.driver.close()
                 print("task got some error, need to restart - don't worry, it'll be finished soon")
+                print(e)
                 self.__init__()
                 self.scrape(url)
                 pass
